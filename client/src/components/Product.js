@@ -42,7 +42,13 @@ class Product extends Component {
                         <Button
                             className="butt p-3"
                             variant="outline-primary"
-                            onClick={this.add_to_cart}
+                            onClick={() => {
+                                this.props.add_product({
+                                    name: this.state.name,
+                                    price: this.state.price,
+                                });
+                                this.add_to_cart();
+                            }}
                         >
                             Add to cart
                             <Badge
