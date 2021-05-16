@@ -14,7 +14,7 @@ function App() {
     const [total_price, setTotalPrice] = useState(0);
     useEffect(() => {
         axios
-            .get("/testing")
+            .get("/games")
             .then(function (response) {
                 setGames(response.data);
             })

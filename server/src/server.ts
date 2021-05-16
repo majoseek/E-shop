@@ -47,7 +47,7 @@ const games = [
 app.get("/", (req, res) => {
     res.send("hi");
 });
-app.get("/testing", (req, res) => {
+app.get("/games", (req, res) => {
     res.send(games);
 });
 app.listen(PORT, () => {
