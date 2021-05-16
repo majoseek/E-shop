@@ -16,8 +16,8 @@ class Product extends Component {
         };
     }
     add_to_cart() {
-        this.setState({ count: this.state.count + 1 });
         this.setState({
+            count: this.state.count + 1,
             count_color: { backgroundColor: "green" },
         });
     }
