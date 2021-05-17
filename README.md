@@ -8,6 +8,8 @@
 #### Front-end
 * React.js
 * HTML and CSS
+#### Tools
+* Docker
 ## Testing
 To try out the application, go to root folder and run:\
 For back-end setup:
