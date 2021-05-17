@@ -7,6 +7,7 @@
 * MongoDB
 #### Front-end
 * React.js
+* Bootstrap-react
 * HTML and CSS
 #### Tools
 * Docker
