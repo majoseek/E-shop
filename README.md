@@ -4,10 +4,10 @@
 * TypeScript
 * Node.js
 * Express.js
-* MongoDB\
+* MongoDB
 **Front-end**
-*React.js
-*HTML, CSS
+* React.js
+* HTML and CSS
 ## Testing
 To try out the application go to root folder and run:\
 For back-end setup:
