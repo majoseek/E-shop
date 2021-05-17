@@ -1,11 +1,11 @@
 # E-shop (in-build)
 ## Used stack
-**Back-end**
+#### Back-end
 * TypeScript
 * Node.js
 * Express.js
 * MongoDB\
-**Front-end**
+#### Front-end
 * React.js
 * HTML and CSS
 ## Testing
