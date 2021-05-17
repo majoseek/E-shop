@@ -4,7 +4,7 @@
 * TypeScript
 * Node.js
 * Express.js
-* MongoDB\
+* MongoDB
 #### Front-end
 * React.js
 * HTML and CSS
