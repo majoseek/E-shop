@@ -31,7 +31,7 @@
     flex-direction: row;
     align-items: stretch;
 }
-.checkout_butt {
+.cart_btns {
     font-family: "Roboto", sans-serif;
     flex: 1;
     border-radius: 0;

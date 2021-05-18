@@ -3,15 +3,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./components/styles/App.css";
 import Product from "./components/Product";
 import CardColumns from "react-bootstrap/CardColumns";
-import "./components/Menu";
-import Menu from "./components/Menu";
 import { useState } from "react";
 import axios from "axios";
+import Uppermenu from "./components/Uppermenu";
+import Cart from "./components/Cart";
+import { Route } from "react-router-dom";
+import Checkout from "./components/Checkout";
 
 function App() {
     const [games, setGames] = useState([]);
     const [products, setProducts] = useState([]);
     const [total_price, setTotalPrice] = useState(0);
+    const [cart_display, setCartDisplay] = useState({ display: "none" });
     useEffect(() => {
         axios
             .get("/games")
@@ -54,26 +57,40 @@ function App() {
     };
     return (
         <React.Fragment>
-            <Menu
+            <Uppermenu
+                products={products}
+                open_cart={() => {
+                    setCartDisplay({ display: "flex" });
+                }}
+            />
+            <Cart
+                close_cart={() => {
+                    setCartDisplay({ display: "none" });
+                }}
+                cart_shown={cart_display}
                 products={products}
                 total_price={total_price}
                 remove_product={remove_product}
             />
-            <CardColumns>
-                {games.map((game) => {
-                    return (
-                        <Product
-                            key={game.name}
-                            name={game.name}
-                            price={game.price}
-                            image_url={game.img_url}
-                            add_product={add_product}
-                        />
-                    );
-                })}
-            </CardColumns>
+            <Route exact path="/">
+                <CardColumns>
+                    {games.map((game) => {
+                        return (
+                            <Product
+                                key={game.name}
+                                name={game.name}
+                                price={game.price}
+                                image_url={game.img_url}
+                                add_product={add_product}
+                            />
+                        );
+                    })}
+                </CardColumns>
+            </Route>
+            <Route exact path="/checkout">
+                <Checkout />
+            </Route>
         </React.Fragment>
     );
 }
-
 export default App;

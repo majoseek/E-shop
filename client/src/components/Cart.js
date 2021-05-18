@@ -7,7 +7,7 @@ import { TiTimes } from "react-icons/ti";
 import Badge from "react-bootstrap/Badge";
 import { MdRemoveCircle } from "react-icons/md";
 import Button from "react-bootstrap/Button";
-
+import { Link } from "react-router-dom";
 class Cart extends Component {
     render() {
         return (
@@ -57,12 +57,21 @@ class Cart extends Component {
                     </span>
                 </Card.Header>
                 <div className="cart_btn_container">
-                <Button className="checkout_butt" variant="success">
-                    Continue shopping
-                </Button>{" "}
-                <Button className="checkout_butt" variant="success">
-                    Checkout
-                </Button>{" "}
+                    <Button
+                        className="cart_btns"
+                        variant="primary"
+                        onClick={this.props.close_cart}
+                    >
+                        Continue shopping
+                    </Button>{" "}
+                    <Button
+                        className="cart_btns"
+                        variant="success"
+                        as={Link}
+                        to="/checkout"
+                    >
+                        Checkout
+                    </Button>{" "}
                 </div>
             </div>
         );
