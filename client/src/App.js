@@ -13,7 +13,6 @@ function App() {
     const [products, setProducts] = useState([]);
     const [total_price, setTotalPrice] = useState(0);
     useEffect(() => {
-        console.log("POBIERAM");
         axios
             .get("/games")
             .then(function (response) {
@@ -22,7 +21,7 @@ function App() {
             .catch(function (error) {
                 console.log(error);
             });
-    },[]);
+    }, []);
     const add_product = (product) => {
         setTotalPrice(total_price + product.price);
         const exist = products.find((x) => x.name === product.name);

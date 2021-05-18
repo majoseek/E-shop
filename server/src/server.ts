@@ -9,19 +9,16 @@ const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
-app.get("/", (req, res) => {
-    res.send("hi");
+client.connect((err) => {
+    if (err) throw err;
 });
-app.get("/games", (req, res) => {
-    client.connect(async (err) => {
-        if (err) throw err;
-        const collection = await client
-            .db("Shop")
-            .collection("Games")
-            .find()
-            .toArray();
-        res.send(collection[0]["games"]);
-    });
+app.get("/games", async (req, res) => {
+    const collection = await client
+        .db("Shop")
+        .collection("Games")
+        .find()
+        .toArray();
+    res.send(collection[0]["games"]);
 });
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);

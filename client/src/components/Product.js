@@ -62,7 +62,7 @@ class Product extends Component {
                         </Button>
                     </Card.Body>
                     <Card.Footer className="text-muted">
-                        Price updated 2 days ago
+                        Price updated 1 day ago
                     </Card.Footer>
                 </Card>
             </React.Fragment>

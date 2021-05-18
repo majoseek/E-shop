@@ -6,6 +6,7 @@ import "./styles/Cart.css";
 import { TiTimes } from "react-icons/ti";
 import Badge from "react-bootstrap/Badge";
 import { MdRemoveCircle } from "react-icons/md";
+import Button from "react-bootstrap/Button";
 
 class Cart extends Component {
     render() {
@@ -14,8 +15,8 @@ class Cart extends Component {
                 className="cart_bar border border-primary"
                 style={this.props.cart_shown}
             >
-                <Card>
-                    <Card.Header>
+                <Card style={{ display: "flex", alignItems: "center" }}>
+                    <Card.Header style={{ width: "100%" }}>
                         Your cart <IoIosCart />
                         <TiTimes
                             onClick={this.props.close_cart}
@@ -23,7 +24,7 @@ class Cart extends Component {
                             style={{ float: "right", cursor: "pointer" }}
                         />
                     </Card.Header>
-                    <ListGroup variant="flush">
+                    <ListGroup variant="flush" style={{ width: "100%" }}>
                         {this.props.products.map((product) => {
                             return (
                                 <ListGroup.Item key={product.name}>
@@ -48,13 +49,21 @@ class Cart extends Component {
                             );
                         })}
                     </ListGroup>
-                    <Card.Header>
-                        <span>TOTAL</span>
-                        <span style={{ float: "right" }}>
-                            {this.props.total_price}$
-                        </span>
-                    </Card.Header>
                 </Card>
+                <Card.Header style={{ width: "100%" }}>
+                    <span>TOTAL</span>
+                    <span style={{ float: "right" }}>
+                        {this.props.total_price}$
+                    </span>
+                </Card.Header>
+                <div className="cart_btn_container">
+                <Button className="checkout_butt" variant="success">
+                    Continue shopping
+                </Button>{" "}
+                <Button className="checkout_butt" variant="success">
+                    Checkout
+                </Button>{" "}
+                </div>
             </div>
         );
     }
