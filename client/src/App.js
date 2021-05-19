@@ -9,6 +9,7 @@ import Uppermenu from "./components/Uppermenu";
 import Cart from "./components/Cart";
 import { Route } from "react-router-dom";
 import Checkout from "./components/Checkout";
+import Welcome from "./components/Welcome";
 
 function App() {
     const [games, setGames] = useState([]);
@@ -73,6 +74,9 @@ function App() {
                 remove_product={remove_product}
             />
             <Route exact path="/">
+                <Welcome />
+            </Route>
+            <Route exact path="/games">
                 <CardColumns>
                     {games.map((game) => {
                         return (
@@ -87,7 +91,12 @@ function App() {
                     })}
                 </CardColumns>
             </Route>
-            <Route exact path="/checkout">
+            <Route
+                exact
+                path="/checkout"
+                total_price={total_price}
+                products={products}
+            >
                 <Checkout />
             </Route>
         </React.Fragment>

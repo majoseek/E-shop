@@ -1,12 +1,12 @@
 import React, { Component } from "react";
+import "./styles/Checkout.css";
 class Checkout extends Component {
     render() {
         return (
-            <React.Fragment>
-                <h1>111111111</h1>
-                <h2>111111111</h2>
-                <h3>CHECKOUUTTTT</h3>
-            </React.Fragment>
+            <div className="maindiv border border-primary rounded">
+                <div></div>
+                <div></div>
+            </div>
         );
     }
 }

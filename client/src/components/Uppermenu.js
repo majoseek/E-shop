@@ -17,13 +17,13 @@ class Uppermenu extends Component {
                 variant="dark"
                 fixed="top"
             >
-                <Navbar.Brand>
+                <Navbar.Brand as={Link} to="/">
                     <b>Gaming Shop</b>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mr-auto">
-                        <Nav.Link as={Link} to="/">
+                        <Nav.Link as={Link} to="/games">
                             Games
                         </Nav.Link>
                         <Nav.Link as={Link} to="/checkout">
