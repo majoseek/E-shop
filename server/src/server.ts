@@ -1,7 +1,7 @@
 import express from "express";
-import path from "path";
 import { MongoClient } from "mongodb";
 const app = express();
+app.use(express.json());
 const PORT = process.env.PORT || 3001;
 const uri =
     "mongodb+srv://admin:admin@gameshopcluster.vyzbs.mongodb.net/Shop?retryWrites=true&w=majority";
@@ -19,6 +19,10 @@ app.get("/games", async (req, res) => {
         .find()
         .toArray();
     res.send(collection[0]["games"]);
+});
+app.post("/checkout", (req, res) => {
+    //TODO: make request to database to purchase products
+    console.log(req.body);
 });
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);

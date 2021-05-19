@@ -2,26 +2,15 @@ import React, { Component } from "react";
 import "./styles/Product.css";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import Badge from "react-bootstrap/Badge";
 class Product extends Component {
     constructor(props) {
         super(props);
-        this.add_to_cart = this.add_to_cart.bind(this);
         this.state = {
             image_url: props.image_url,
             name: props.name,
             price: props.price,
-            count_color: { backgroundColor: "transparent" },
-            count: 0,
         };
     }
-    add_to_cart() {
-        this.setState({
-            count: this.state.count + 1,
-            count_color: { backgroundColor: "green" },
-        });
-    }
-
     render() {
         return (
             <React.Fragment>
@@ -47,17 +36,9 @@ class Product extends Component {
                                     name: this.state.name,
                                     price: this.state.price,
                                 });
-                                this.add_to_cart();
                             }}
                         >
                             Add to cart
-                            <Badge
-                                className="m-3"
-                                style={this.state.count_color}
-                                variant="light"
-                            >
-                                {this.state.count}
-                            </Badge>
                             <span className="sr-only">unread messages</span>
                         </Button>
                     </Card.Body>

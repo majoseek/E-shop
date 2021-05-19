@@ -91,13 +91,8 @@ function App() {
                     })}
                 </CardColumns>
             </Route>
-            <Route
-                exact
-                path="/checkout"
-                total_price={total_price}
-                products={products}
-            >
-                <Checkout />
+            <Route exact path="/checkout">
+                <Checkout total_price={total_price} products={products} />
             </Route>
         </React.Fragment>
     );

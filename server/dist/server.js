@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongodb_1 = require("mongodb");
 const app = express_1.default();
+app.use(express_1.default.json());
 const PORT = process.env.PORT || 3001;
 const uri = "mongodb+srv://admin:admin@gameshopcluster.vyzbs.mongodb.net/Shop?retryWrites=true&w=majority";
 const client = new mongodb_1.MongoClient(uri, {
@@ -33,6 +34,10 @@ app.get("/games", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         .toArray();
     res.send(collection[0]["games"]);
 }));
+app.post("/checkout", (req, res) => {
+    //TODO: make request to database to purchase products
+    console.log(req.body);
+});
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
 });
