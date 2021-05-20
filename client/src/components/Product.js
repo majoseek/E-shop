@@ -9,7 +9,25 @@ class Product extends Component {
             image_url: props.image_url,
             name: props.name,
             price: props.price,
+            amount: props.amount,
         };
+        this.get_amount = this.get_amount.bind(this);
+        this.check_amount = this.check_amount.bind(this);
+    }
+    get_amount() {
+        if (this.state.amount > 0) {
+            return this.state.amount + " items left";
+        }
+        return "Out of stock";
+    }
+    check_amount() {
+        if (this.state.amount > 0) {
+            this.setState({ amount: this.state.amount - 1 });
+            this.props.add_product({
+                name: this.state.name,
+                price: this.state.price,
+            });
+        }
     }
     render() {
         return (
@@ -31,19 +49,14 @@ class Product extends Component {
                         <Button
                             className="butt p-3"
                             variant="outline-primary"
-                            onClick={() => {
-                                this.props.add_product({
-                                    name: this.state.name,
-                                    price: this.state.price,
-                                });
-                            }}
+                            onClick={this.check_amount}
                         >
                             Add to cart
                             <span className="sr-only">unread messages</span>
                         </Button>
                     </Card.Body>
                     <Card.Footer className="text-muted">
-                        Price updated 1 day ago
+                        {this.get_amount()}
                     </Card.Footer>
                 </Card>
             </React.Fragment>

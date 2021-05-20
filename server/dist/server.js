@@ -32,13 +32,17 @@ app.get("/games", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         .collection("Games")
         .find()
         .toArray();
-    res.send(collection[0]["games"]);
+    res.send(collection);
 }));
-app.post("/checkout", (req, res) => {
-    //TODO: make request to database to purchase products
-    console.log(req.body);
+app.post("/checkout", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    req.body.products.forEach((product) => {
+        client
+            .db("Shop")
+            .collection("Games")
+            .updateOne({ name: product.name }, { $inc: { amount: -product.qty } });
+    });
     res.sendStatus(200);
-});
+}));
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
 });

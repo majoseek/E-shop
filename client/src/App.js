@@ -85,6 +85,7 @@ function App() {
                                 name={game.name}
                                 price={game.price}
                                 image_url={game.img_url}
+                                amount={game.amount}
                                 add_product={add_product}
                             />
                         );
@@ -92,7 +93,11 @@ function App() {
                 </CardColumns>
             </Route>
             <Route exact path="/checkout">
-                <Checkout total_price={total_price} products={products} />
+                <Checkout
+                    total_price={total_price}
+                    products={products}
+                    setProducts={setProducts}
+                />
             </Route>
         </React.Fragment>
     );

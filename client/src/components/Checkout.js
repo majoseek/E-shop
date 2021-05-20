@@ -29,6 +29,7 @@ class Checkout extends Component {
             })
             .then(
                 (response) => {
+                    this.props.setProducts([]);
                     this.props.history.push("/");
                     alert("We've sent you email with further instructions");
                 },

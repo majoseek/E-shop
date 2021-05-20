@@ -1,5 +1,6 @@
 import express from "express";
 import { MongoClient } from "mongodb";
+import Product from "./Product";
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 3001;
@@ -18,11 +19,18 @@ app.get("/games", async (req, res) => {
         .collection("Games")
         .find()
         .toArray();
-    res.send(collection[0]["games"]);
+    res.send(collection);
 });
-app.post("/checkout", (req, res) => {
-    //TODO: make request to database to purchase products
-    console.log(req.body);
+app.post("/checkout", async (req, res) => {
+    req.body.products.forEach((product: Product) => {
+        client
+            .db("Shop")
+            .collection("Games")
+            .updateOne(
+                { name: product.name },
+                { $inc: { amount: -product.qty } }
+            );
+    });
     res.sendStatus(200);
 });
 app.listen(PORT, () => {

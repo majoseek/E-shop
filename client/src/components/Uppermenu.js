@@ -27,7 +27,7 @@ class Uppermenu extends Component {
                             Games
                         </Nav.Link>
                         <Nav.Link as={Link} to="/checkout">
-                            Pricing
+                            Checkout
                         </Nav.Link>
                     </Nav>
                     <Form inline>
