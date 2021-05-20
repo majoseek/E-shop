@@ -8,8 +8,9 @@ import FormControl from "react-bootstrap/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import axios from "axios";
+
 class Checkout extends Component {
     constructor(props) {
         super(props);
@@ -28,7 +29,8 @@ class Checkout extends Component {
             })
             .then(
                 (response) => {
-                    alert("We sent you email with instructions");
+                    this.props.history.push("/");
+                    alert("We've sent you email with further instructions");
                 },
                 (error) => {
                     console.log(error);
@@ -82,8 +84,6 @@ class Checkout extends Component {
                         </Row>
                         <Button
                             onClick={this.checkout}
-                            as={Link}
-                            to="/"
                             className="p-3 mt-4"
                             style={{ float: "right" }}
                             variant="primary"
@@ -95,7 +95,10 @@ class Checkout extends Component {
                         <h4 className="m-4">Your cart</h4>
                         <hr className="mb-5" />
                         <ListGroup
-                            style={{ overflowY: "auto", maxHeight: "400px" }}
+                            style={{
+                                overflowY: "auto",
+                                maxHeight: "400px",
+                            }}
                         >
                             {this.props.products.map((product) => {
                                 return (
@@ -124,4 +127,4 @@ class Checkout extends Component {
         );
     }
 }
-export default Checkout;
+export default withRouter(Checkout);

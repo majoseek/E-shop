@@ -37,6 +37,7 @@ app.get("/games", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 app.post("/checkout", (req, res) => {
     //TODO: make request to database to purchase products
     console.log(req.body);
+    res.sendStatus(200);
 });
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);

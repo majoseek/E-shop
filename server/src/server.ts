@@ -23,6 +23,7 @@ app.get("/games", async (req, res) => {
 app.post("/checkout", (req, res) => {
     //TODO: make request to database to purchase products
     console.log(req.body);
+    res.sendStatus(200);
 });
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
