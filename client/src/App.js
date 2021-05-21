@@ -10,6 +10,8 @@ import Cart from "./components/Cart";
 import { Route } from "react-router-dom";
 import Checkout from "./components/Checkout";
 import Welcome from "./components/Welcome";
+import Register from "./components/Register";
+import Login from "./components/Login";
 
 function App() {
     const [games, setGames] = useState([]);
@@ -98,6 +100,12 @@ function App() {
                     products={products}
                     setProducts={setProducts}
                 />
+            </Route>
+            <Route exact path="/register">
+                <Register />
+            </Route>
+            <Route exact path="/login">
+                <Login />
             </Route>
         </React.Fragment>
     );

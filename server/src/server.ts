@@ -21,7 +21,13 @@ app.get("/games", async (req, res) => {
         .toArray();
     res.send(collection);
 });
-app.post("/checkout", async (req, res) => {
+app.post("/login", (req, res) => {
+    res.sendStatus(200);
+});
+app.post("/register", (req, res) => {
+    res.sendStatus(200);
+});
+app.post("/checkout", (req, res) => {
     req.body.products.forEach((product: Product) => {
         client
             .db("Shop")

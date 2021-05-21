@@ -34,7 +34,13 @@ app.get("/games", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         .toArray();
     res.send(collection);
 }));
-app.post("/checkout", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post("/login", (req, res) => {
+    res.sendStatus(200);
+});
+app.post("/register", (req, res) => {
+    res.sendStatus(200);
+});
+app.post("/checkout", (req, res) => {
     req.body.products.forEach((product) => {
         client
             .db("Shop")
@@ -42,7 +48,7 @@ app.post("/checkout", (req, res) => __awaiter(void 0, void 0, void 0, function* 
             .updateOne({ name: product.name }, { $inc: { amount: -product.qty } });
     });
     res.sendStatus(200);
-}));
+});
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
 });

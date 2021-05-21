@@ -29,6 +29,12 @@ class Uppermenu extends Component {
                         <Nav.Link as={Link} to="/checkout">
                             Checkout
                         </Nav.Link>
+                        <Nav.Link as={Link} to="/register">
+                            Register
+                        </Nav.Link>
+                        <Nav.Link as={Link} to="/login">
+                            Login
+                        </Nav.Link>
                     </Nav>
                     <Form inline>
                         <Nav.Link onClick={this.props.open_cart}>
