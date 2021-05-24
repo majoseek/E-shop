@@ -26,10 +26,8 @@ class Register extends Component {
             })
             .then(
                 (response) => {
-                    if (response.status === 200) {
-                        this.props.history.push("/");
-                        alert(response.data.message);
-                    } else alert("INTERNAL SERVER ERROR");
+                    this.props.history.push("/");
+                    alert(response.data.message);
                 },
                 (error) => {
                     console.log(error);

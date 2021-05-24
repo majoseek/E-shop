@@ -5,6 +5,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -12,6 +14,26 @@ class Login extends Component {
             username_input: "",
             password_input: "",
         };
+        this.user_login = this.user_login.bind(this);
+    }
+    user_login() {
+        axios
+            .post("/login", {
+                username: this.state.username_input,
+                password: this.state.password_input,
+            })
+            .then(
+                (response) => {
+                    if (response.data.token) {
+                        //logged in
+                    } else {
+                        alert("Wrong password");
+                    }
+                },
+                (err) => {
+                    console.log(err);
+                }
+            );
     }
     render() {
         return (
@@ -61,6 +83,7 @@ class Login extends Component {
                                 <Button
                                     variant="primary"
                                     className="p-3"
+                                    onClick={this.user_login}
                                     disabled={
                                         !this.state.username_input ||
                                         !this.state.password_input

@@ -35,6 +35,7 @@ const express_1 = __importDefault(require("express"));
 const mongodb_1 = require("mongodb");
 const dotenv = __importStar(require("dotenv"));
 const jwt = require("jsonwebtoken");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 dotenv.config({ path: __dirname + "/.env" });
 const app = express_1.default();
 app.use(express_1.default.json());
@@ -57,11 +58,43 @@ app.get("/games", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send(collection);
 }));
 app.post("/login", (req, res) => {
-    //@TODO use jwt token to auth user's connection
-    res.sendStatus(200);
+    const { username, password } = req.body;
+    const user = client
+        .db("Shop")
+        .collection("Users")
+        .findOne({ username: username }, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.sendStatus(400);
+        }
+        if (result) {
+            //user found in DB
+            bcrypt_1.default.compare(password, result.password, (err, check) => __awaiter(void 0, void 0, void 0, function* () {
+                if (check) {
+                    const token = yield jwt.sign(username, process.env.JWT_SECRET);
+                    res.status(200).json({
+                        message: "User logged in",
+                        token: token,
+                    });
+                }
+                else {
+                    res.status(200).json({
+                        message: "Wrong password",
+                    });
+                }
+            }));
+        } //user not found in DB
+        else {
+            res.status(200).json({
+                message: "User with that username not found",
+            });
+        }
+    });
 });
-app.post("/register", (req, res) => {
-    const { email, username, password } = req.body;
+app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const email = req.body.email;
+    const username = req.body.username;
+    const password = yield bcrypt_1.default.hash(req.body.password, 10);
     const user = client
         .db("Shop")
         .collection("Users")
@@ -82,11 +115,13 @@ app.post("/register", (req, res) => {
                 username: username,
                 password: password,
             })
-                .then((result) => res.status(200).json({ message: "User added" }))
+                .then((result) => res
+                .status(200)
+                .json({ message: "User registered successfully" }))
                 .catch((error) => res.sendStatus(400));
         }
     });
-});
+}));
 app.post("/checkout", (req, res) => {
     req.body.products.forEach((product) => {
         client

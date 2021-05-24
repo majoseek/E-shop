@@ -32,14 +32,13 @@ class Uppermenu extends Component {
                         <Nav.Link
                             as={Link}
                             to="/register"
-                            hidden={this.props.logged_in}
                         >
                             Register
                         </Nav.Link>
                         <Nav.Link
                             as={Link}
                             to="/login"
-                            hidden={!this.props.logged_in}
+                            hidden={this.props.logged_in}
                         >
                             Login
                         </Nav.Link>
