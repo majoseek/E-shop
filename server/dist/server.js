@@ -57,16 +57,35 @@ app.get("/games", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send(collection);
 }));
 app.post("/login", (req, res) => {
+    //@TODO use jwt token to auth user's connection
     res.sendStatus(200);
 });
 app.post("/register", (req, res) => {
     const { email, username, password } = req.body;
-    client
+    const user = client
         .db("Shop")
         .collection("Users")
-        .insertOne({ email: email, username: username, password: password })
-        .then((result) => res.sendStatus(200))
-        .catch((error) => res.sendStatus(400));
+        .findOne({ email: email }, (err, result) => {
+        if (err)
+            console.log(err);
+        if (result) {
+            res.status(200).json({
+                message: "User with that email already exists",
+            });
+        }
+        else {
+            client
+                .db("Shop")
+                .collection("Users")
+                .insertOne({
+                email: email,
+                username: username,
+                password: password,
+            })
+                .then((result) => res.status(200).json({ message: "User added" }))
+                .catch((error) => res.sendStatus(400));
+        }
+    });
 });
 app.post("/checkout", (req, res) => {
     req.body.products.forEach((product) => {

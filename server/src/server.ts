@@ -29,15 +29,32 @@ app.post("/login", (req, res) => {
 });
 app.post("/register", (req, res) => {
     const { email, username, password } = req.body;
-    client
+    const user = client
         .db("Shop")
         .collection("Users")
-        .insertOne({ email: email, username: username, password: password })
-        .then((result) => res.sendStatus(200))
-        .catch((error) => res.sendStatus(400));
+        .findOne({ email: email }, (err, result) => {
+            if (err) console.log(err);
+            if (result) {
+                res.status(200).json({
+                    message: "User with that email already exists",
+                });
+            } else {
+                client
+                    .db("Shop")
+                    .collection("Users")
+                    .insertOne({
+                        email: email,
+                        username: username,
+                        password: password,
+                    })
+                    .then((result) =>
+                        res.status(200).json({ message: "User registered successfully" })
+                    )
+                    .catch((error) => res.sendStatus(400));
+            }
+        });
 });
 app.post("/checkout", (req, res) => {
-    //@TODO check if user exists in database
     req.body.products.forEach((product: Product) => {
         client
             .db("Shop")

@@ -28,7 +28,7 @@ class Register extends Component {
                 (response) => {
                     if (response.status === 200) {
                         this.props.history.push("/");
-                        alert("User registered successfully");
+                        alert(response.data.message);
                     } else alert("INTERNAL SERVER ERROR");
                 },
                 (error) => {
