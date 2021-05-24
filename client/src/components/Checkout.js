@@ -29,9 +29,11 @@ class Checkout extends Component {
             })
             .then(
                 (response) => {
-                    this.props.setProducts([]);
-                    this.props.history.push("/");
-                    alert("We've sent you email with further instructions");
+                    if (response.status === 200) {
+                        this.props.setProducts([]);
+                        this.props.history.push("/");
+                        alert("We've sent you email with further instructions");
+                    } else console.log("INTERNVAL SERVER ERROR");
                 },
                 (error) => {
                     console.log(error);

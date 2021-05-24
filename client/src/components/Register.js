@@ -5,6 +5,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
+import axios from "axios";
+import { withRouter } from "react-router-dom";
 class Register extends Component {
     constructor(props) {
         super(props);
@@ -13,6 +15,26 @@ class Register extends Component {
             username_input: "",
             password_input: "",
         };
+        this.register_user = this.register_user.bind(this);
+    }
+    register_user() {
+        axios
+            .post("/register", {
+                email: this.state.email_input,
+                username: this.state.username_input,
+                password: this.state.password_input,
+            })
+            .then(
+                (response) => {
+                    if (response.status === 200) {
+                        this.props.history.push("/");
+                        alert("User registered successfully");
+                    } else alert("INTERNAL SERVER ERROR");
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
     }
     render() {
         return (
@@ -75,7 +97,16 @@ class Register extends Component {
                         </Row>
                         <Row>
                             <Col>
-                                <Button variant="primary" className="p-3">
+                                <Button
+                                    variant="primary"
+                                    className="p-3"
+                                    onClick={this.register_user}
+                                    disabled={
+                                        !this.state.email_input ||
+                                        !this.state.username_input ||
+                                        !this.state.password_input
+                                    }
+                                >
                                     Submit
                                 </Button>{" "}
                             </Col>
@@ -86,4 +117,4 @@ class Register extends Component {
         );
     }
 }
-export default Register;
+export default withRouter(Register);

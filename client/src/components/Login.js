@@ -58,7 +58,14 @@ class Login extends Component {
                         </Row>
                         <Row>
                             <Col>
-                                <Button variant="primary" className="p-3">
+                                <Button
+                                    variant="primary"
+                                    className="p-3"
+                                    disabled={
+                                        !this.state.username_input ||
+                                        !this.state.password_input
+                                    }
+                                >
                                     Submit
                                 </Button>{" "}
                             </Col>
