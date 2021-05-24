@@ -56,8 +56,8 @@ app.post("/login", (req, res) => {
                         }
                     }
                 );
-            } //user not found in DB
-            else {
+            } else {
+                //user not found in DB
                 res.status(200).json({
                     message: "User with that username not found",
                 });
