@@ -14,4 +14,6 @@
 * Postman
 ## Testing
 To try out the application, go to root folder and run:\
+```
 docker-compose up -d
+```
