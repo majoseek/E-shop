@@ -1,8 +1,10 @@
 import express from "express";
 import { MongoClient } from "mongodb";
 import Product from "./Product";
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import * as dotenv from "dotenv";
+dotenv.config({ path: __dirname + "/.env" });
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 3001;
@@ -22,7 +24,7 @@ app.get("/games", async (req, res) => {
         .toArray();
     res.send(collection);
 });
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
     const { username, password } = req.body;
     const user = client
         .db("Shop")
@@ -33,20 +35,15 @@ app.post("/login", (req, res) => {
                 res.sendStatus(400);
             }
             if (result) {
-                // res.status(200).json({
-                //     message: "User logged in",
-                //     token: "token",
-                // });
-
                 //user found in DB
                 bcrypt.compare(
                     password,
                     result.password,
                     async (err, check) => {
                         if (check) {
-                            const token = await jwt.sign(
+                            const token = jwt.sign(
                                 username,
-                                process.env.JWT_SECRET
+                                process.env.JWT_SECRET as string
                             );
                             res.status(200).json({
                                 message: "User logged in",
@@ -99,6 +96,28 @@ app.post("/register", async (req, res) => {
         });
 });
 app.post("/checkout", (req, res) => {
+    if (!req.body.token) {
+        res.sendStatus(400).json({ message: "No auth token provided" });
+    } else {
+        jwt.verify(
+            req.body.token,
+            process.env.JWT_SECRET as string,
+            (err: any, username: any) => {
+                if (err) {
+                    res.send(200).json({
+                        message: "User not authenticated",
+                        auth: false,
+                    });
+                } else {
+                    res.send(200).json({
+                        message: "User authenticated",
+                        auth: true,
+                    });
+                    console.log(username);
+                }
+            }
+        );
+    }
     req.body.products.forEach((product: Product) => {
         client
             .db("Shop")
