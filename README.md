@@ -13,21 +13,5 @@
 * Docker
 * Postman
 ## Testing
-For now to try out the application, go to root folder and run:\
-For back-end setup:
-```
-npm install
-```
-```
-npm run start
-```
-For front-end setup:
-```
-cd client
-```
-```
-npm install
-```
-```
-npm start
-```
+To try out the application, go to root folder and run:\
+docker-compose up -d
