@@ -12,7 +12,7 @@
 #### Tools
 * Docker
 ## Testing
-To try out the application, go to root folder and run:\
+For now to try out the application, go to root folder and run:\
 For back-end setup:
 ```
 npm install
