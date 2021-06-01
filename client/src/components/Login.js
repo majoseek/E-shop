@@ -10,6 +10,7 @@ import { useCookies } from "react-cookie";
 class Login extends Component {
     constructor(props) {
         super(props);
+        const { cookies } = props;
         this.state = {
             username_input: "",
             password_input: "",
@@ -26,6 +27,10 @@ class Login extends Component {
                 (response) => {
                     if (response.data.token) {
                         //logged in
+                        const { cookies } = this.props;
+                        cookies.set("token", response.data.token, {
+                            path: "/",
+                        });
                     } else {
                         alert("Wrong password");
                     }
