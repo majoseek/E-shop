@@ -1,14 +1,12 @@
 import express from "express";
 import { MongoClient } from "mongodb";
 import Product from "./Product";
-import * as dotenv from "dotenv";
 const jwt = require("jsonwebtoken");
 import bcrypt from "bcrypt";
-dotenv.config({ path: __dirname + "/.env" });
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 3001;
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@gameshopcluster.vyzbs.mongodb.net/Shop?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://admin:admin@gameshopcluster.vyzbs.mongodb.net/Shop?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -35,6 +33,11 @@ app.post("/login", (req, res) => {
                 res.sendStatus(400);
             }
             if (result) {
+                // res.status(200).json({
+                //     message: "User logged in",
+                //     token: "token",
+                // });
+
                 //user found in DB
                 bcrypt.compare(
                     password,

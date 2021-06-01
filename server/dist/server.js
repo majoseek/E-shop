@@ -1,23 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -33,14 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongodb_1 = require("mongodb");
-const dotenv = __importStar(require("dotenv"));
-const jwt = require("jsonwebtoken");
-const bcrypt_1 = __importDefault(require("bcrypt"));
-dotenv.config({ path: __dirname + "/.env" });
+//const jwt = require("jsonwebtoken");
+//import bcrypt from "bcrypt";
 const app = express_1.default();
 app.use(express_1.default.json());
 const PORT = process.env.PORT || 3001;
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@gameshopcluster.vyzbs.mongodb.net/Shop?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://admin:admin@gameshopcluster.vyzbs.mongodb.net/Shop?retryWrites=true&w=majority`;
 const client = new mongodb_1.MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -68,23 +47,34 @@ app.post("/login", (req, res) => {
             res.sendStatus(400);
         }
         if (result) {
+            res.status(200).json({
+                message: "User logged in",
+                token: "token",
+            });
             //user found in DB
-            bcrypt_1.default.compare(password, result.password, (err, check) => __awaiter(void 0, void 0, void 0, function* () {
-                if (check) {
-                    const token = yield jwt.sign(username, process.env.JWT_SECRET);
-                    res.status(200).json({
-                        message: "User logged in",
-                        token: token,
-                    });
-                }
-                else {
-                    res.status(200).json({
-                        message: "Wrong password",
-                    });
-                }
-            }));
-        } //user not found in DB
+            // bcrypt.compare(
+            //     password,
+            //     result.password,
+            //     async (err, check) => {
+            //         if (check) {
+            //             /*const token = await jwt.sign(
+            //                 username,
+            //                 process.env.JWT_SECRET
+            //             );*/
+            //             res.status(200).json({
+            //                 message: "User logged in",
+            //                 token: "token",
+            //             });
+            //         } else {
+            //             res.status(200).json({
+            //                 message: "Wrong password",
+            //             });
+            //         }
+            //     }
+            // );
+        }
         else {
+            //user not found in DB
             res.status(200).json({
                 message: "User with that username not found",
             });
@@ -94,7 +84,7 @@ app.post("/login", (req, res) => {
 app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.body.email;
     const username = req.body.username;
-    const password = yield bcrypt_1.default.hash(req.body.password, 10);
+    //const password = await bcrypt.hash(req.body.password, 10);
     const user = client
         .db("Shop")
         .collection("Users")
@@ -113,7 +103,7 @@ app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 .insertOne({
                 email: email,
                 username: username,
-                password: password,
+                //password: password,
             })
                 .then((result) => res
                 .status(200)
