@@ -11,6 +11,7 @@
 * HTML and CSS
 #### Tools
 * Docker
+* Postman
 ## Testing
 For now to try out the application, go to root folder and run:\
 For back-end setup:
