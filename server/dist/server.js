@@ -32,34 +32,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const mongodb_1 = require("mongodb");
+const Product_router_1 = require("./Product/Product.router");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const database_1 = __importDefault(require("./database"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: __dirname + "/.env" });
 const app = express_1.default();
 app.use(express_1.default.json());
 const PORT = process.env.PORT || 3001;
-const uri = `mongodb+srv://admin:admin@gameshopcluster.vyzbs.mongodb.net/Shop?retryWrites=true&w=majority`;
-const client = new mongodb_1.MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-client.connect((err) => {
-    if (err)
-        throw err;
-});
-app.get("/games", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const collection = yield client
-        .db("Shop")
-        .collection("Games")
-        .find()
-        .toArray();
-    res.send(collection);
-}));
+app.use("/product", Product_router_1.ProductRouter);
 app.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = req.body;
-    const user = client
+    database_1.default
         .db("Shop")
         .collection("Users")
         .findOne({ username: username }, (err, result) => {
@@ -96,7 +81,7 @@ app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const email = req.body.email;
     const username = req.body.username;
     const password = yield bcrypt_1.default.hash(req.body.password, 10);
-    const user = client
+    const user = database_1.default
         .db("Shop")
         .collection("Users")
         .findOne({ email: email }, (err, result) => {
@@ -108,7 +93,7 @@ app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* 
             });
         }
         else {
-            client
+            database_1.default
                 .db("Shop")
                 .collection("Users")
                 .insertOne({
@@ -123,37 +108,6 @@ app.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
     });
 }));
-app.post("/checkout", (req, res) => {
-    if (!req.body.token) {
-        res.sendStatus(400).json({ message: "No auth token provided" });
-    }
-    else {
-        jsonwebtoken_1.default.verify(req.body.token, process.env.JWT_SECRET, (err, username) => {
-            if (err) {
-                res.send(200).json({
-                    message: "User not authenticated",
-                    auth: false,
-                });
-            }
-            else {
-                res.send(200).json({
-                    message: "User authenticated",
-                    auth: true,
-                });
-                console.log(username);
-            }
-        });
-    }
-    req.body.products.forEach((product) => {
-        client
-            .db("Shop")
-            .collection("Games")
-            .updateOne({ name: product.name }, { $inc: { amount: -product.qty } })
-            .then((result) => res.sendStatus(200))
-            .catch((error) => res.sendStatus(400));
-    });
-    res.sendStatus(200);
-});
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
 });

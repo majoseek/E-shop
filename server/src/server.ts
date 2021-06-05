@@ -1,32 +1,17 @@
 import express from "express";
-import { MongoClient } from "mongodb";
-import Product from "./Product";
+import { ProductRouter } from "./Product/Product.router";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import client from "./database";
 import * as dotenv from "dotenv";
 dotenv.config({ path: __dirname + "/.env" });
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 3001;
-const uri = `mongodb+srv://admin:admin@gameshopcluster.vyzbs.mongodb.net/Shop?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-client.connect((err) => {
-    if (err) throw err;
-});
-app.get("/games", async (req, res) => {
-    const collection = await client
-        .db("Shop")
-        .collection("Games")
-        .find()
-        .toArray();
-    res.send(collection);
-});
+app.use("/product", ProductRouter);
 app.post("/login", async (req, res) => {
     const { username, password } = req.body;
-    const user = client
+    client
         .db("Shop")
         .collection("Users")
         .findOne({ username: username }, (err, result) => {
@@ -94,42 +79,6 @@ app.post("/register", async (req, res) => {
                     .catch((error) => res.sendStatus(400));
             }
         });
-});
-app.post("/checkout", (req, res) => {
-    if (!req.body.token) {
-        res.sendStatus(400).json({ message: "No auth token provided" });
-    } else {
-        jwt.verify(
-            req.body.token,
-            process.env.JWT_SECRET as string,
-            (err: any, username: any) => {
-                if (err) {
-                    res.send(200).json({
-                        message: "User not authenticated",
-                        auth: false,
-                    });
-                } else {
-                    res.send(200).json({
-                        message: "User authenticated",
-                        auth: true,
-                    });
-                    console.log(username);
-                }
-            }
-        );
-    }
-    req.body.products.forEach((product: Product) => {
-        client
-            .db("Shop")
-            .collection("Games")
-            .updateOne(
-                { name: product.name },
-                { $inc: { amount: -product.qty } }
-            )
-            .then((result) => res.sendStatus(200))
-            .catch((error) => res.sendStatus(400));
-    });
-    res.sendStatus(200);
 });
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
