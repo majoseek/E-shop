@@ -13,26 +13,31 @@ export const checkout = async (
     token: any,
     products: Array<Product>
 ): Promise<Object> => {
-    if (jwt.verify(token, process.env.JWT_SECRET as string)) {
-        return new Promise((resolver, reject) => {
-            products.forEach((product: Product) => {
-                client
-                    .db("Shop")
-                    .collection("Games")
-                    .updateOne(
-                        { name: product.name },
-                        { $inc: { amount: -product.qty } }
-                    )
-                    .then(() => {
-                        resolver({ message: "Products bought" });
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        reject({ message: "Internal server error" });
+    return new Promise((resolver, reject) => {
+        jwt.verify(
+            token,
+            process.env.JWT_SECRET as string,
+            (err: any, decoded: any) => {
+                if (err) resolver("Wrong username or password");
+                else {
+                    products.forEach((product: Product) => {
+                        client
+                            .db("Shop")
+                            .collection("Games")
+                            .updateOne(
+                                { name: product.name },
+                                { $inc: { amount: -product.qty } }
+                            )
+                            .then(() => {
+                                resolver({ message: "Products bought" });
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                reject({ message: "Internal server error" });
+                            });
                     });
-            });
-        });
-    } else {
-        return { message: "User not authenticated" };
-    }
+                }
+            }
+        );
+    });
 };

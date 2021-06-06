@@ -9,11 +9,13 @@ ProductRouter.get("/games", async (req, res) => {
     else res.status(400).json({ message: "Internal server error" });
 });
 ProductRouter.post("/checkout", async (req, res) => {
-    if (!req.body.token) {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+    if (!token) {
         res.status(400).json({ message: "No auth token provided" });
     } else {
-        res.status(200).json(
-            Product_Service.checkout(req.body.token, req.body.products)
+        res.status(200).send(
+            await Product_Service.checkout(token, req.body.products)
         );
     }
 });
