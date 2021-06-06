@@ -4,56 +4,18 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import client from "./database";
 import * as dotenv from "dotenv";
+import { UserRouter } from "./User/User.router";
 dotenv.config({ path: __dirname + "/.env" });
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 3001;
 app.use("/product", ProductRouter);
-app.post("/login", async (req, res) => {
-    const { username, password } = req.body;
-    client
-        .db("Shop")
-        .collection("Users")
-        .findOne({ username: username }, (err, result) => {
-            if (err) {
-                console.log(err);
-                res.sendStatus(400);
-            }
-            if (result) {
-                //user found in DB
-                bcrypt.compare(
-                    password,
-                    result.password,
-                    async (err, check) => {
-                        if (check) {
-                            const token = jwt.sign(
-                                username,
-                                process.env.JWT_SECRET as string
-                            );
-                            res.status(200).json({
-                                message: "User logged in",
-                                token: token,
-                            });
-                        } else {
-                            res.status(200).json({
-                                message: "Wrong password",
-                            });
-                        }
-                    }
-                );
-            } else {
-                //user not found in DB
-                res.status(200).json({
-                    message: "User with that username not found",
-                });
-            }
-        });
-});
+app.use("/user", UserRouter);
 app.post("/register", async (req, res) => {
     const email = req.body.email;
     const username = req.body.username;
     const password = await bcrypt.hash(req.body.password, 10);
-    const user = client
+    client
         .db("Shop")
         .collection("Users")
         .findOne({ email: email }, (err, result) => {
