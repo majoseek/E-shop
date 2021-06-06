@@ -1,6 +1,5 @@
 import express from "express";
 import * as User_Service from "./User.service";
-import User from "./User.interface";
 export const UserRouter = express.Router();
 
 UserRouter.post("/login", async (req, res) => {
@@ -8,7 +7,7 @@ UserRouter.post("/login", async (req, res) => {
         req.body.username,
         req.body.password
     );
-    res.json(login_status);
+    res.send(login_status);
 });
 UserRouter.post("/register", async (req, res) => {
     if (!req.body.email || !req.body.username || !req.body.password)
@@ -18,5 +17,5 @@ UserRouter.post("/register", async (req, res) => {
         username: req.body.username,
         password: req.body.password,
     });
-    res.status(200).json(register_status);
+    res.status(200).send(register_status);
 });
