@@ -12,7 +12,7 @@
 #### Tools
 * Docker
 * Postman
-## Testing
+## Getting started
 To try out the application, go to root folder and run:
 ```
 docker-compose up -d
