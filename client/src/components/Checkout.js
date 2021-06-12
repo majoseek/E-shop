@@ -22,11 +22,19 @@ class Checkout extends Component {
     }
     checkout() {
         axios
-            .post("/product/checkout", {
-                username: this.state.username_input,
-                email: this.state.email_input,
-                products: this.props.products,
-            })
+            .post(
+                "/product/checkout",
+                {
+                    username: this.state.username_input,
+                    email: this.state.email_input,
+                    products: this.props.products,
+                },
+                {
+                    headers: {
+                        authorization: `authorization ${this.props.log_in_token}`,
+                    },
+                }
+            )
             .then(
                 (response) => {
                     if (response.status === 200) {

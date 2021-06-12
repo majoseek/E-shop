@@ -105,6 +105,7 @@ function App() {
                     total_price={total_price}
                     products={products}
                     setProducts={setProducts}
+                    log_in_token={cookies.token}
                 />
             </Route>
             <Route exact path="/register">

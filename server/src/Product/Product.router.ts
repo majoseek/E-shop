@@ -11,8 +11,8 @@ ProductRouter.get("/games", async (req, res) => {
 ProductRouter.post("/checkout", async (req, res) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
-    if (!token) {
-        res.status(400).json({ message: "No auth token provided" });
+    if (token == null || token == "undefined") {
+        res.status(400).json({ message: "You have to log in first" });
     } else {
         res.status(200).send(
             await Product_Service.checkout(token, req.body.products)
