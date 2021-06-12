@@ -2,6 +2,13 @@ import jwt from "jsonwebtoken";
 import client from "../database";
 import bcrypt from "bcrypt";
 import User from "./User.interface";
+
+/**
+ *
+ * @param username string containing username of user, which tries to log in
+ * @param password string containing password of user, which tries to log in
+ * @returns Promise<Object> login status, which tells if user data is correct
+ */
 export const login = async (
     username: string,
     password: string
@@ -50,12 +57,18 @@ export const login = async (
     }
 };
 
+/**
+ *
+ * @param user interface:User, contains user, which tries to register
+ * @returns Promise<Object> register status, which tells if user successfully registered
+ */
 export const register = async (user: User): Promise<Object> => {
     return new Promise((resolver, reject) => {
         client
             .db("Shop")
             .collection("Users")
             .findOne({ email: user.email }, (err, result) => {
+                //check if user with that email exists
                 if (err) console.log(err);
                 if (result) {
                     resolver({
@@ -66,11 +79,12 @@ export const register = async (user: User): Promise<Object> => {
                         .db("Shop")
                         .collection("Users")
                         .insertOne({
+                            //register user
                             email: user.email,
                             username: user.username,
                             password: user.password,
                         })
-                        .then((result) =>
+                        .then(() =>
                             resolver({
                                 message: "User registered successfully",
                             })
