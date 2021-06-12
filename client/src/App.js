@@ -12,15 +12,17 @@ import Checkout from "./components/Checkout";
 import Welcome from "./components/Welcome";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import { useCookies } from "react-cookie";
 
 function App() {
     const [games, setGames] = useState([]);
     const [products, setProducts] = useState([]);
     const [total_price, setTotalPrice] = useState(0);
     const [cart_display, setCartDisplay] = useState({ display: "none" });
+    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     useEffect(() => {
         axios
-            .get("/games")
+            .get("/product/games")
             .then(function (response) {
                 setGames(response.data);
             })
@@ -65,6 +67,10 @@ function App() {
                 open_cart={() => {
                     setCartDisplay({ display: "flex" });
                 }}
+                logged_in={cookies.token ? true : false}
+                log_out={() => {
+                    removeCookie("token");
+                }}
             />
             <Cart
                 close_cart={() => {
@@ -105,7 +111,11 @@ function App() {
                 <Register />
             </Route>
             <Route exact path="/login">
-                <Login />
+                <Login
+                    log_in={(token) => {
+                        setCookie("token", token, { path: "/" });
+                    }}
+                />
             </Route>
         </React.Fragment>
     );

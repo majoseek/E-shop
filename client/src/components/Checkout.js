@@ -22,7 +22,7 @@ class Checkout extends Component {
     }
     checkout() {
         axios
-            .post("/checkout", {
+            .post("/product/checkout", {
                 username: this.state.username_input,
                 email: this.state.email_input,
                 products: this.props.products,

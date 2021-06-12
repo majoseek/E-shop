@@ -19,7 +19,7 @@ class Register extends Component {
     }
     register_user() {
         axios
-            .post("/register", {
+            .post("/user/register", {
                 email: this.state.email_input,
                 username: this.state.username_input,
                 password: this.state.password_input,

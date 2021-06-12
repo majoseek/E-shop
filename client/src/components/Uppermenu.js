@@ -32,6 +32,7 @@ class Uppermenu extends Component {
                         <Nav.Link
                             as={Link}
                             to="/register"
+                            hidden={this.props.logged_in}
                         >
                             Register
                         </Nav.Link>
@@ -49,6 +50,16 @@ class Uppermenu extends Component {
                             <Badge className="m-2 p-1" variant="light">
                                 {this.props.products.length}
                             </Badge>
+                        </Nav.Link>
+                        <Nav.Link
+                            as={Link}
+                            to="/"
+                            hidden={!this.props.logged_in}
+                            onClick={() => {
+                                this.props.log_out();
+                            }}
+                        >
+                            Logout
                         </Nav.Link>
                         <FormControl
                             type="text"

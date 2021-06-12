@@ -6,11 +6,16 @@ import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import axios from "axios";
-import { useCookies } from "react-cookie";
+import { withCookies, Cookies } from "react-cookie";
+import { compose } from "recompose";
+import { instanceOf } from "prop-types";
+import { withRouter } from "react-router-dom";
 class Login extends Component {
+    static propTypes = {
+        cookies: instanceOf(Cookies).isRequired,
+    };
     constructor(props) {
         super(props);
-        const { cookies } = props;
         this.state = {
             username_input: "",
             password_input: "",
@@ -19,7 +24,7 @@ class Login extends Component {
     }
     user_login() {
         axios
-            .post("/login", {
+            .post("/user/login", {
                 username: this.state.username_input,
                 password: this.state.password_input,
             })
@@ -31,6 +36,8 @@ class Login extends Component {
                         cookies.set("token", response.data.token, {
                             path: "/",
                         });
+                        this.props.log_in(response.data.token);
+                        this.props.history.push("/");
                     } else {
                         alert("Wrong password");
                     }
@@ -104,4 +111,4 @@ class Login extends Component {
         );
     }
 }
-export default Login;
+export default compose(withCookies, withRouter)(Login);
