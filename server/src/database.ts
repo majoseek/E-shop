@@ -1,5 +1,7 @@
 import { MongoClient } from "mongodb";
-const uri = `mongodb+srv://admin:admin@gameshopcluster.vyzbs.mongodb.net/Shop?retryWrites=true&w=majority`;
+import * as dotenv from "dotenv";
+dotenv.config({ path: __dirname + "/.env" });
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@gameshopcluster.vyzbs.mongodb.net/Shop?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
