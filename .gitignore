@@ -1,4 +1,6 @@
-dist
+server/dist/Product
+server/dist/User
+server/dist/*.js
 .vscode/
 # Logs
 logs
