@@ -17,17 +17,3 @@ Collection ```Users```
 | id                 | email   | username | password|
 | ------------------ |:-------:| :-------:| :------:|
 | SERIAL PRIMARY KEY | string  | string   | string  |
-
-## Tech stack
-#### Back-end
-* TypeScript
-* Node.js
-* Express.js
-* MongoDB
-#### Front-end
-* React.js
-* Bootstrap-react
-* HTML and CSS
-#### Tools
-* Docker
-* Postman
